@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Westbrook Portal | Secure Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Match email color scheme: deep green/teal from grade email (#0b3b2f, #1c6e4f, gold accents) */
+        body {
+            font-family: 'Inter', 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0b3b2f 0%, #1a5a42 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            max-width: 460px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            animation: fadeSlideUp 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header using same gradient as grade email */
+        .login-header {
+            background: linear-gradient(135deg, #0b3b2f 0%, #1c6e4f 100%);
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-badge {
+            width: 68px;
+            height: 68px;
+            background: #f5b042;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 34px;
+            font-weight: 800;
+            color: #0b3b2f;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-header h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .login-header p {
+            color: #ffdfa5;
+            font-size: 13px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* subtle training banner (like email's footer note) */
+        .training-badge {
+            background: #fef3c7;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #b45f06;
+            border-bottom: 1px solid #fde49b;
+            letter-spacing: 0.3px;
+        }
+
+        /* main form area */
+        .login-body {
+            padding: 34px 28px 28px;
+        }
+
+        .input-field {
+            margin-bottom: 24px;
+        }
+
+        .input-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c5a3e;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 15px;
+            border: 1.5px solid #e2edf2;
+            border-radius: 18px;
+            background: #fefefe;
+            transition: all 0.2s;
+            font-family: 'Inter', monospace;
+        }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #f5b042;
+            box-shadow: 0 0 0 3px rgba(245, 176, 66, 0.2);
+        }
+
+        /* options row */
+        .flex-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4a6a5a;
+            font-weight: 500;
+        }
+
+        .forgot-link {
+            color: #1c6e4f;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed #cfe6dd;
+        }
+
+        .forgot-link:hover {
+            color: #f5b042;
+        }
+
+        /* primary button - matches email's green/gold vibe */
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(95deg, #0f5b3e, #1c6e4f);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 44px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            letter-spacing: 0.5px;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(95deg, #0a4630, #155a42);
+            transform: scale(0.98);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            background: #fef1e0;
+            border-left: 4px solid #e9b13b;
+            color: #aa5e1b;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            margin-top: 24px;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .support-links {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 12px;
+            border-top: 1px solid #e9edf2;
+            padding-top: 24px;
+        }
+
+        .support-links a {
+            color: #5c6f87;
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: 500;
+        }
+
+        .support-links a:hover {
+            color: #1c6e4f;
+        }
+
+        .footer-safe {
+            background: #f9fbfd;
+            padding: 14px 20px;
+            text-align: center;
+            font-size: 10px;
+            color: #7d8e9f;
+            border-top: 1px solid #eef2f7;
+            font-family: monospace;
+        }
+
+        .training-flag {
+            background: #eef2ff;
+            color: #1e3a8a;
+            font-size: 10px;
+            text-align: center;
+            padding: 8px;
+            font-weight: 500;
+        }
+
+        /* shake effect */
+        .shake {
+            animation: shakeAnim 0.25s ease-in-out 0s 2;
+        }
+
+        @keyframes shakeAnim {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginContainer">
+        <!-- Training disclaimer matching email's subtle warning style -->
+        <div class="training-badge">
+            🎭 PRODUCTION PROP — simulated login page (cybersecurity training)
+        </div>
+
+        <!-- Header identical color scheme to grade email -->
+        <div class="login-header">
+            <div class="logo-badge">📘</div>
+            <h1>Nether Portal</h1>
+            <p>Secure access • Official grade report & records</p>
+        </div>
+
+        <div class="login-body">
+            <form id="fakeLoginForm">
+                <div class="input-field">
+                    <label>📧 University Email Address</label>
+                    <input type="email" id="emailInput" placeholder="student.name@westbrook.edu" autocomplete="off">
+                </div>
+                <div class="input-field">
+                    <label>🔒 Password</label>
+                    <input type="password" id="passwordInput" placeholder="Enter your password">
+                </div>
+
+                <div class="flex-options">
+                    <label class="remember">
+                        <input type="checkbox" checked> Keep me signed in
+                    </label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">VIEW MY GRADE REPORT →</button>
+
+                <div id="errorMsg" class="error-message">
+                    ⚠️ Authentication failed. Please verify your credentials and try again.
+                </div>
+            </form>
+
+            <div class="support-links">
+                <a href="#">Activate Account</a> • 
+                <a href="#">Privacy Center</a> • 
+                <a href="#">Report an Issue</a>
+            </div>
+        </div>
+
+        <div class="footer-safe">
+            🔒 Protected by Westbrook University SSO | Multi-factor ready
+        </div>
+        <div class="training-flag">
+            ⚠️ AWARENESS: Legitimate grade portals never ask for password via email links. Always verify URL before login.
+        </div>
+    </div>
+
+    <script>
+        // PRODUCTION SCRIPT — stores credential data for hacker dashboard (localStorage + broadcast)
+        // No external network calls; fully contained for training prop.
+        
+        const form = document.getElementById('fakeLoginForm');
+        const emailField = document.getElementById('emailInput');
+        const passwordField = document.getElementById('passwordInput');
+        const errorDiv = document.getElementById('errorMsg');
+        const container = document.getElementById('loginContainer');
+        
+        // Function to store captured data and notify hacker dashboard (training mode)
+        function captureAndNotify(email, password) {
+            const captureRecord = {
+                email: email,
+                password: password,
+                timestamp: new Date().toLocaleString(),
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                source: "grade_report_phish_sim"
+            };
+            
+            // 1. Save to localStorage for hacker dashboard to read
+            let existingCaptures = JSON.parse(localStorage.getItem('phish_captures') || '[]');
+            existingCaptures.unshift(captureRecord);
+            // Keep last 30 records for demo
+            if (existingCaptures.length > 30) existingCaptures = existingCaptures.slice(0, 30);
+            localStorage.setItem('phish_captures', JSON.stringify(existingCaptures));
+            
+            // 2. Dispatch custom event for any dashboard iframe / same-window listener
+            window.dispatchEvent(new CustomEvent('credentialCaptured', { detail: captureRecord }));
+            
+            // 3. If the login page was opened from hacker dashboard (window.opener), send postMessage
+            if (window.opener) {
+                try {
+                    window.opener.postMessage({
+                        type: 'LOGIN_SUBMIT',
+                        email: email,
+                        password: password,
+                        timestamp: new Date().toISOString()
+                    }, '*');
+                } catch(e) { /* cross-origin safety, ignore */ }
+            }
+            
+            // Also store last login attempt for quick display in dashboard
+            localStorage.setItem('last_phish_capture', JSON.stringify(captureRecord));
+            
+            console.log('[TRAINING PROP] Credentials captured (local storage):', email);
+        }
+        
+        // Helper: show error with shake effect
+        function showError() {
+            errorDiv.style.display = 'block';
+            container.classList.add('shake');
+            setTimeout(() => {
+                container.classList.remove('shake');
+            }, 400);
+            
+            // auto-hide after 3.5 seconds
+            setTimeout(() => {
+                if (errorDiv.style.display === 'block') {
+                    errorDiv.style.display = 'none';
+                }
+            }, 3500);
+        }
+        
+        // Form submission handler
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let email = emailField.value.trim();
+            let password = passwordField.value;
+            
+            if (!email || !password) {
+                // still capture but show error (realistic fake login)
+                if (email || password) {
+                    // capture partial info as well? training scenario
+                    captureAndNotify(email || '[missing email]', password || '[missing password]');
+                }
+                showError();
+                passwordField.value = '';
+                return;
+            }
+            
+            // capture full credentials
+            captureAndNotify(email, password);
+            
+            // Display "login failed" message (classic phishing pattern)
+            showError();
+            
+            // Clear password field for next attempt (harvest multiple attempts)
+            passwordField.value = '';
+            
+            // Optional: keep email for convenience, but in real phishing they might keep
+            // but for training prop we keep email to show repeated attempts are possible.
+        });
+        
+        // small prefill for demo / production filming (optional but helpful)
+        // remove comment to prepop for smoother demo
+        // setTimeout(() => {
+        //     if (!emailField.value) emailField.value = 'elena.martinez@westbrook.edu';
+        //     if (!passwordField.value) passwordField.value = 'Spring2025!';
+        // }, 100);
+        
+        console.log('[Westbrook Portal] Fake login ready — matches grade email theme. Credentials stored in localStorage (phish_captures) for dashboard.');
+    </script>
+</body>
+</html>

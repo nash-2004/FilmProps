@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Grade Release</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        /* Main email card */
+        .grade-card {
+            max-width: 620px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        /* School header with achievement vibe */
+        .school-header {
+            background: linear-gradient(135deg, #0b3b2f 0%, #1c6e4f 100%);
+            padding: 24px 28px 20px 28px;
+            position: relative;
+        }
+
+        .badge-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .school-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .academic-icon {
+            background: #f5b042;
+            width: 48px;
+            height: 48px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: #0b3b2f;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .uni-title {
+            color: white;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.2px;
+        }
+
+        .uni-sub {
+            color: #e0f2e9;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .semester-chip {
+            background: rgba(255,255,240,0.2);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 40px;
+            color: #fff3cf;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 1px solid rgba(245,176,66,0.5);
+        }
+
+        .header-note {
+            margin-top: 18px;
+            color: #d9f0e8;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-left: 3px solid #f5b042;
+            padding-left: 12px;
+        }
+
+        /* main content */
+        .grade-body {
+            padding: 28px 28px 20px 28px;
+        }
+
+        .greeting-grade {
+            font-size: 1rem;
+            color: #1e2a32;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: #fef9e6;
+            border-radius: 24px;
+            padding: 20px 24px;
+            margin: 20px 0;
+            border: 1px solid #ffe2a4;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .grade-status {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .grade-letter {
+            font-size: 58px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1f6e4a, #e9b13b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .grade-message {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c5a3e;
+            margin-top: 8px;
+        }
+
+        .grade-detail {
+            margin-top: 14px;
+            font-size: 14px;
+            color: #5a5e49;
+            border-top: 1px dashed #f0dbaa;
+            padding-top: 14px;
+        }
+
+        .official-stats {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 16px 20px;
+            margin: 22px 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid #e2edf2;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #5f6c7a;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-weight: 800;
+            font-size: 20px;
+            color: #1f3b4c;
+            margin-top: 6px;
+        }
+
+        .action-area {
+            background: #ecfdf5;
+            border-radius: 20px;
+            padding: 12px 20px;
+            margin: 24px 0 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-left: 5px solid #2b7a4b;
+        }
+
+        .action-text {
+            font-weight: 500;
+            color: #115e3a;
+            font-size: 0.9rem;
+        }
+
+        /* primary CTA - "view grades" looks like a real grade portal */
+        .grade-button {
+            background: #0f5b3e;
+            color: white !important;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .grade-button:hover {
+            background: #09452f;
+            transform: scale(0.98);
+        }
+
+        .info-note {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            margin: 20px 0 12px;
+            color: #2c4b5e;
+            border: 1px solid #dce5ec;
+        }
+
+        .signature-block {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px solid #e9edf2;
+            font-size: 13px;
+            color: #5c6f87;
+            line-height: 1.5;
+        }
+
+        .footer-safe {
+            background: #f9fbfd;
+            padding: 14px 24px;
+            font-size: 11px;
+            color: #7d8e9f;
+            text-align: center;
+            border-top: 1px solid #eef2f7;
+            font-family: monospace;
+        }
+
+        .disclaimer-badge {
+            background: #fef3c7;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #b45f06;
+            margin-top: 8px;
+        }
+
+        /* subtle training flag */
+        .training-flag {
+            background: #eef2ff;
+            color: #1e3a8a;
+            font-size: 11px;
+            text-align: center;
+            padding: 8px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 500px) {
+            .grade-body {
+                padding: 20px;
+            }
+            .grade-letter {
+                font-size: 44px;
+            }
+            .action-area {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="grade-card">
+    <!-- School Header: looks like official grade release -->
+    <div class="school-header">
+        <div class="badge-row">
+            <div class="school-name">
+                <div class="academic-icon">📘</div>
+                <div>
+                    <div class="uni-title">Nether Portal University</div>
+                    <div class="uni-sub">Office of the Registrar & Academic Records</div>
+                </div>
+            </div>
+            <div class="semester-chip">Spring Semester 2025</div>
+        </div>
+        <div class="header-note">
+            ✔️ Official Grade Release · Final Academic Standing
+        </div>
+    </div>
+
+    <!-- main message body: grades are out, NOT storage overload -->
+    <div class="grade-body">
+        <div class="greeting-grade">
+            Dear <strong>Abdul Jabol Salsalani</strong>,
+        </div>
+        
+        <p style="margin-bottom: 16px; color: #2c3e4e; line-height: 1.45;">
+            The registrar's office has officially published <strong>final semester grades</strong> for the Spring 2025 term. 
+            Your academic record is now available through the secure student portal.
+        </p>
+
+        <!-- Central grade element: feels like exciting news, not a threat -->
+        <div class="highlight-box">
+            <div class="grade-status">
+                <span class="grade-letter">B+</span>
+                <div class="grade-message">Cumulative GPA: 3.42 ▲ +0.18</div>
+                <div class="grade-detail">
+                    📊 Spring 2025 semester · 15 credit hours completed
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester stats / breakdown -->
+        <div class="official-stats">
+            <div class="stat-item">
+                <div class="stat-label">Credit Hours</div>
+                <div class="stat-value">15</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Term GPA</div>
+                <div class="stat-value">3.60</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Dean's List</div>
+                <div class="stat-value">✔️ Eligible</div>
+            </div>
+        </div>
+
+        <!-- real action: view full grade report (phishing simulation) -->
+        <div class="action-area">
+            <span class="action-text">📄 Your detailed grade report is ready for review.</span>
+            <!-- The link points to log-in.html for training purpose, similar to original but thematic -->
+            <a href="log-in.html" class="grade-button" target="_blank">VIEW MY GRADE REPORT →</a>
+        </div>
+
+        <div class="info-note">
+            <strong>ℹ️ Academic note:</strong> Official transcripts will be available starting May 12. If you notice any discrepancy 
+            regarding attendance or grade entry, please contact the Registrar's office before <strong>May 20, 2025</strong>.
+        </div>
+
+        <!-- No storage warning, no threatening consequences – just grade release context -->
+        <div class="signature-block">
+            <strong>Dr. Anya Sharma</strong><br>
+            University Registrar<br>
+            Westbrook University · Office of Academic Records<br>
+            <span style="font-size: 11px;">Reference: GRD-S25-4821 | Issue date: May 5, 2025</span>
+        </div>
+    </div>
+
+    <!-- subtle footer: training context / prop identification -->
+    <div class="footer-safe">
+        This is an automated notification from the Westbrook Registrar. Please do not reply directly.
+        <div class="disclaimer-badge">
+            📢 TRAINING PROP — simulated grade release email
+        </div>
+    </div>
+    <div class="training-flag">
+        ⚠️ Cybersecurity awareness: legitimate grade notifications never ask for password via email. 
+        Always verify the sender domain before clicking.
+    </div>
+</div>
+
+</body>
+</html>
